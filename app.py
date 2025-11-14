@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 
 # Create a Flask app instance
 app = Flask(__name__)
-app.config["DEBUG"] = True
 
 # Configure SQLite database using absolute path
 basedir = os.path.abspath(os.path.dirname(__file__))
