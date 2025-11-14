@@ -3,9 +3,12 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_
 import os
 from data_models import db, Author, Book
+import google.generativeai as genai
+from dotenv import load_dotenv
 
 # Create a Flask app instance
 app = Flask(__name__)
+app.config["DEBUG"] = True
 
 # Configure SQLite database using absolute path
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -117,9 +120,39 @@ def delete_book(book_id):
     return redirect(url_for('home', message=message, sort=sort))
 
 
+load_dotenv()
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+
+
+@app.route("/recommend")
+def recommend():
+    books = Book.query.all()
+    if not books:
+        return render_template("recommend.html", recommendation="No books found. Add some first!")
+
+    # Liste der Buchtitel + Autoren generieren
+    book_list_text = "\n".join([f"{book.title} by {book.author.name}" for book in books])
+
+    prompt = f"""
+    I have read the following books:
+    {book_list_text}
+
+    Based on this list, recommend one new amazing book I should read next.
+    Explain briefly why you recommend it.
+    """
+
+    model = genai.GenerativeModel("models/gemini-pro-latest")
+    response = model.generate_content(prompt)
+
+    recommendation = response.text if response.text else "Could not generate recommendation."
+
+    return render_template("recommend.html", recommendation=recommendation)
+
+
 """# Create tables
 with app.app_context():
   db.create_all()"""
+
 
 if __name__ == "__main__":
     app.run()

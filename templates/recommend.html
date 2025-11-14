@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>📖 Book Recommendation</title>
+
+<style>
+    body {
+        background: #0f1521;
+        font-family: 'Poppins', sans-serif;
+        color: white;
+        text-align: center;
+        padding-top: 80px;
+    }
+    .card {
+        width: 600px;
+        margin: auto;
+        padding: 25px;
+        background: rgba(255,255,255,0.06);
+        border-radius: 16px;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        line-height: 1.5em;
+    }
+    a {
+        color: #6bb5ff;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+</head>
+<body>
+
+<h2>💡 Suggested Book for You</h2>
+
+<div class="card">
+    <p>{{ recommendation }}</p>
+</div>
+
+<br>
+<a href="/">← Back to Library</a>
+
+</body>
+</html>
