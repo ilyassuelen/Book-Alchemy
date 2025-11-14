@@ -1,22 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  </head>
-  <body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Add Author</title>
 
-  <form action="/add_author" method="POST">
-  <label for="name">Author Name:</label>
-  <input type="text" id="name" name="name" required><br><br>
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background: #0f1521;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        color: white;
+    }
+    .card {
+        background: rgba(255,255,255,0.06);
+        padding: 35px;
+        width: 350px;
+        border-radius: 18px;
+        backdrop-filter: blur(12px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+        text-align: center;
+    }
+    input {
+        width: 100%;
+        padding: 12px;
+        margin: 12px 0;
+        border-radius: 6px;
+        border: none;
+        background: rgba(255,255,255,0.1);
+        color: white;
+    }
+    button {
+        width: 100%;
+        background: #4f7cff;
+        color: white;
+        padding: 12px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: 0.3s;
+    }
+    button:hover {
+        background: #375CD1;
+    }
+    a {
+        color: #6bb5ff;
+        text-decoration: none;
+        font-size: 14px;
+    }
+</style>
+</head>
+<body>
 
-  <label for="birthdate">Birthdate:</label>
-  <input type="date" id="birthdate" name="birthdate" required><br><br>
-  <label for="date_of_death">Date of Death:</label>
-  <input type="date" id="date_of_death" name="date_of_death"><br><br>
-  <input type="submit" value="Add Author">
-  </form>
+<div class="card">
+    <h2>➕ Add Author</h2>
 
-  </body>
+    {% if message %}
+    <p style="color:#65ff87">{{ message }}</p>
+    {% endif %}
+
+    <form method="POST">
+        <input type="text" name="name" placeholder="Author Name" required>
+        <label>Birthdate</label>
+        <input type="date" name="birthdate" required>
+        <label>Date of Death</label>
+        <input type="date" name="date_of_death">
+        <button type="submit">Save Author</button>
+    </form>
+
+    <a href="/">← Back to Library</a>
+</div>
+</body>
 </html>
