@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import or_
 import os
@@ -92,6 +92,30 @@ def home():
 
     books = query.all()
     return render_template("home.html", books=books, sort=sort)
+
+
+@app.route("/book/<int:book_id>/delete", methods=["POST"])
+def delete_book(book_id):
+    book = Book.query.get(book_id)
+    if not book:
+        return "Book not found", 404
+
+    author = book.author
+
+    db.session.delete(book)
+    db.session.commit()
+
+    message = f'"{book.title}" was deleted successfully!'
+
+    # If the book’s author doesn’t have any other books in your library → delete
+    if len(author.books) == 0:
+        db.session.delete(author)
+        db.session.commit()
+        message += f' Author "{author.name}" deleted as well.'
+
+    sort = request.args.get("sort", "title")
+    return redirect(url_for('home', message=message, sort=sort))
+
 
 """# Create tables
 with app.app_context():

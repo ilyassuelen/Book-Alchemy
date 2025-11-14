@@ -9,6 +9,10 @@
 
     <h2>📚 My Library</h2>
 
+    {% if request.args.get('message') %}
+    <p style="color: green;">{{ request.args.get('message') }}</p>
+    {% endif %}
+
     <form action="/" method="GET">
         <input type="text" name="search" placeholder="Search books..." required>
         <button type="submit">Search</button>
@@ -35,6 +39,11 @@
             <p>Author: {{ book.author.name }}</p>
             <p>Published: {{ book.publication_year }}</p>
 
+            <form action="/book/{{ book.id }}/delete" method="POST" style="display:inline;">
+                <button type="submit" onclick="return confirm('Delete this book?');">
+                    ❌ Delete Book
+                </button>
+            </form>
         </div>
         {% endfor %}
     {% else %}
