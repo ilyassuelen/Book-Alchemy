@@ -7,10 +7,38 @@
   </head>
   <body>
 
-    {% for book in books %}
-    <div> <h3>{{ book.title }}</h3>
-    </div>
-    {% endfor %}
+    <h2>📚 My Library</h2>
 
-  </body>
+    <p>Sort by:
+        <a href="/?sort=title">Title</a> |
+        <a href="/?sort=author">Author</a> |
+        <a href="/?sort=year">Year</a>
+    </p>
+
+    {% if books %}
+        {% for book in books %}
+        <div style="margin-bottom: 20px;">
+
+            <!-- Buchcover nur anzeigen, wenn ISBN existiert -->
+            {% if book.isbn %}
+                <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg"
+                    alt="cover image"
+                    width="100">
+            {% endif %}
+
+            <h3>{{ book.title }}</h3>
+            <p>Author: {{ book.author.name }}</p>
+            <p>Published: {{ book.publication_year }}</p>
+
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No books found. <a href="/add_book">Add one</a> 📘</p>
+    {% endif %}
+
+    <br>
+    <a href="/add_author">➕ Add Author</a> |
+    <a href="/add_book">📘 Add Book</a>
+
+</body>
 </html>
