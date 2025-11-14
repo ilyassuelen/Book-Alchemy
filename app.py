@@ -12,3 +12,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(basedir, 'data
 
 # Initialize Flask app for SQLAlchemy
 db.init_app(app)
+
+# Create tables
+with app.app_context():
+  db.create_all()
