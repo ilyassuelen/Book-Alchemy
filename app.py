@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import or_
 import os
 from data_models import db, Author, Book
 
@@ -69,15 +70,27 @@ def add_book():
 
 @app.route("/")
 def home():
-    sort = request.args.get("sort", "title")  # default: title
+    sort = request.args.get("sort", "title")
+    search = request.args.get("search", "")
+
+    # Basic query
+    query = Book.query.join(Author)
+
+    if search:
+        keyword = f"%{search}%"
+        query = query.filter(
+            or_(Book.title.ilike(keyword),
+                Author.name.ilike(keyword))
+        )
 
     if sort == "author":
-        books = Book.query.join(Author).order_by(Author.name.asc()).all()
+        query = query.order_by(Author.name.asc())
     elif sort == "year":
-        books = Book.query.order_by(Book.publication_year.asc()).all()
+        query = query.order_by(Book.publication_year.asc())
     else:
-        books = Book.query.order_by(Book.title.asc()).all()
+        query = query.order_by(Book.title.asc())
 
+    books = query.all()
     return render_template("home.html", books=books, sort=sort)
 
 """# Create tables
